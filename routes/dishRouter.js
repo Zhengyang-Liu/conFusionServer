@@ -20,6 +20,7 @@ dishRouter.route('/')
             .catch((err) => next(err));
     })
     .post(authenticate.verifyUser, (req, res, next) => {
+        authenticate.verifyAdmin(req);
         Dishes.create(req.body)
             .then((dish) => {
                 console.log('Dish Created ', dish);
@@ -30,10 +31,12 @@ dishRouter.route('/')
             .catch((err) => next(err));
     })
     .put(authenticate.verifyUser, (req, res, next) => {
+        authenticate.verifyAdmin(req);
         res.statusCode = 403;
         res.end('PUT operation not supported on /dishes');
     })
     .delete(authenticate.verifyUser, (req, res, next) => {
+        authenticate.verifyAdmin(req);
         Dishes.remove({})
             .then((resp) => {
                 res.statusCode = 200;
